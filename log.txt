@@ -1,1 +1,6 @@
-<log goes here>
+<log goes here>URL: /
+Timestamp: Fri Apr 23 2021 18:54:23 GMT-0600 (Mountain Daylight Time)
+
+URL: /favicon.ico
+Timestamp: Fri Apr 23 2021 18:54:23 GMT-0600 (Mountain Daylight Time)
+
