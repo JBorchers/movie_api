@@ -8,7 +8,7 @@ const app = express();
 // invokes middleware function; uses morgan's 'common' format
 app.use(morgan('common'));
 
-app.use('/documentation', express.static('public'));
+app.use('/', express.static('public'));
 
 // error-handling middleware
 app.use((err, req, res, next) => {
