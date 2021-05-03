@@ -5,8 +5,123 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Documentation</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
-    This should be the documentation file:)
+    <header>
+        <h1>myFlix Documentation</h1>
+    </header>
+    <ul>
+        <li>
+            Return a list of ALL movies to the user
+        </li>
+        <li>
+            Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user
+        </li>
+        <li>
+            Return data about a genre (description) by name/title (e.g., “Thriller”)
+        </li>
+        <li>
+            Return data about a director (bio, birth year, death year) by name
+        </li>
+        <li>
+            Allow new users to register
+        </li>
+        <li>
+            Allow users to update their user info (username)
+        </li>
+        <li>
+            Allow users to add a movie to their list of favorites
+        </li>
+        <li>
+            Allow users to remove a movie from their list of favorites
+        </li>
+        <li>
+            Allow existing users to deregister
+        </li>
+    </ul>
+    <div>
+        <h2>Description of Endpoints</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Business Logic</th>
+                    <th>URL</th>
+                    <th>HTTP Method</th>
+                    <th>Request Body Data Format</th>
+                    <th>Response</th>
+                </tr>
+            </thead>
+            <tr>
+                <td>Display list of ALL movies to user</td>
+                <td>/movies</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>JSON object containing data about all movies</td>
+            </tr>
+            <tr>
+                <td>Get movie descriptions</td>
+                <td>/movies/:descriptions</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>JSON object containing specific movie data (description, genres, director,image URL)</td>
+            </tr>
+            <tr>
+                <td>Get genre description</td>
+                <td>/movies/:genres</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>JSON object containing data about genres</td>
+            </tr>
+            <tr>
+                <td>Get list of directors</td>
+                <td>/directors</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>JSON object containing data about directors (bio, birth year, death year)</td>
+            </tr>
+            <tr>
+                <td>Register a user</td>
+                <td>/users</td>
+                <td>POST</td>
+                <td>JSON object holding data about the registering user</td>
+                <td>JSON object holding data about the user that was registered, including a unique ID</td>
+            </tr>
+            <tr>
+                <td>Update a user's information</td>
+                <td>/users/:username</td>
+                <td>PUT</td>
+                <td>None</td>
+                <td>A text message indicating the user's information has been updated</td>
+            </tr>
+            <tr>
+                <td>Add movie to user's list of favorites</td>
+                <td>/users/:username/favorites</td>
+                <td>POST</td>
+                <td>JSON object holding data about the movies to add to favorite's list</td>
+                <td>JSON object holding data about the movies added to favorie's list</td>
+            </tr>
+            <tr>
+                <td>Remove movie from user's favorites list</td>
+                <td>/users/:username/favorites/movies</td>
+                <td>DELETE</td>
+                <td>None</td>
+                <td>A text message indicating a movie has successfully been removed</td>
+            </tr>
+            <tr>
+                <td>Deregister user</td>
+                <td>/users/:username</td>
+                <td>DELETE</td>
+                <td>None</td>
+                <td>A text message indicating the user has successfully deregistered</td>
+            </tr>
+        </table>
+    </div>
 </body>
 </html>
