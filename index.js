@@ -1,6 +1,9 @@
 // imports express module locally
 const express = require('express'),
-  morgan = require('morgan');
+  morgan = require('morgan'),
+  bodyParser = require('body-parser'),
+  uuid = require('uuid');
+  ;
 
 // declares variable - used to route HTTP requests and responses
 const app = express();
@@ -10,6 +13,8 @@ app.use(morgan('common'));
 
 app.use('/', express.static('public'));
 
+app.use(bodyParser.json());
+
 // error-handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -17,10 +22,11 @@ app.use((err, req, res, next) => {
 });
 
 // source: https://editorial.rottentomatoes.com/guide/marvel-movies-in-order/
-let topMovies = [
+let movies = [
   {
     title: 'Captian America: The First Avenger',
     mainActor: 'Chris Evans',
+    genre: 'Action',
     releaseDate: 2011,
     director: 'Joe Johnston'
   },
@@ -80,18 +86,82 @@ let topMovies = [
   },
 ];
 
-// GET requests
+let directors = [
+  {
+    name: 'Director A',
+    bio: '',
+    birthYear: '',
+    deathYear: ''
+  },
+  {
+    name: 'Director B',
+    bio: '',
+    birthYear: '',
+    deathYear: ''
+  },
+  {
+    name: 'Director C',
+    bio: '',
+    birthYear: '',
+    deathYear: ''
+  }
+];
+
+// Express codes to route endpoints
 app.get('/', (req, res) => {
   res.send('\"You have no idea what you\'re dealing with.\"<p>\"Uh... Shakespeare in the park? Doth mother know, you weareth her drapes?\"</p>');
 });
 
 app.get('/movies', (req, res) => {
-  res.json(topMovies);
+  res.json(movies);
 });
 
+// gets data about a specific movie
+app.get('/movies/:descriptions', (req, res) => {
+  res.json(movies.find((movies) =>
+    { return movies.title === req.params.title }));
+});
+
+app.get('/movies/:genres', (req, res) => {
+  res.json(genres);
+});
+
+app.get('/directors', (req, res) => {
+  res.json(directors);
+});
+
+// registers a new user
+app.post('/users', (req, res) => {
+  let newUser = req.body;
+
+  if(!newUser.name) {
+    const message = 'Missing name in request body';
+    res.status(400).send(message);
+  } else {
+    newUser.id = uuid.v4();
+    users.push(newUser);
+    res.status(201).send(newUser);
+  }
+});
+
+app.put('/users/:username', (req, res) => {
+  res.send('Your username has been updated.')
+})
+
+app.post('/users/:username/favorites', (req, res) => {
+  res.send('[movie] has been added to your list!')
+})
+
+app.delete('/users/:username/favorites/movies', (req, res) => {
+  res.send('[movie] has been removed from your list.')
+})
+
+app.delete('/users/:username', (req, res) => {
+  res.send('Your profile was successfully removed')
+})
 
 
 // listening for requests
 app.listen(8080, () => {
-  console.log('My exercise 2.4 assigment is running on port 8080.');
+  console.log('My project is running on port 8080.');
 });
