@@ -51,8 +51,9 @@
         <table>
             <thead>
                 <tr>
-                    <th>Business Logic</th>
+                    <th>Description</th>
                     <th>URL</th>
+                    <th>Query Parameter</th>
                     <th>HTTP Method</th>
                     <th>Request Body Data Format</th>
                     <th>Response</th>
@@ -61,12 +62,14 @@
             <tr>
                 <td>Display list of ALL movies to user</td>
                 <td>/movies</td>
+                <td>None</td>
                 <td>GET</td>
                 <td>None</td>
                 <td>JSON object containing data about all movies</td>
             </tr>
             <tr>
                 <td>Get movie descriptions</td>
+                <td>/movies/[descriptions]</td>
                 <td>/movies/:descriptions</td>
                 <td>GET</td>
                 <td>None</td>
@@ -74,6 +77,7 @@
             </tr>
             <tr>
                 <td>Get genre description</td>
+                <td>/movies/[genres]</td>
                 <td>/movies/:genres</td>
                 <td>GET</td>
                 <td>None</td>
@@ -82,6 +86,7 @@
             <tr>
                 <td>Get list of directors</td>
                 <td>/directors</td>
+                <td>None</td>
                 <td>GET</td>
                 <td>None</td>
                 <td>JSON object containing data about directors (bio, birth year, death year)</td>
@@ -89,12 +94,14 @@
             <tr>
                 <td>Register a user</td>
                 <td>/users</td>
+                <td>None</td>
                 <td>POST</td>
                 <td>JSON object holding data about the registering user</td>
                 <td>JSON object holding data about the user that was registered, including a unique ID</td>
             </tr>
             <tr>
                 <td>Update a user's information</td>
+                <td>/users/[username]</td>
                 <td>/users/:username</td>
                 <td>PUT</td>
                 <td>None</td>
@@ -102,6 +109,7 @@
             </tr>
             <tr>
                 <td>Add movie to user's list of favorites</td>
+                <td>/users/[username]/favorites</td>
                 <td>/users/:username/favorites</td>
                 <td>POST</td>
                 <td>JSON object holding data about the movies to add to favorite's list</td>
@@ -109,6 +117,7 @@
             </tr>
             <tr>
                 <td>Remove movie from user's favorites list</td>
+                <td>/users/[username]/favorites/movies</td>
                 <td>/users/:username/favorites/movies</td>
                 <td>DELETE</td>
                 <td>None</td>
@@ -116,6 +125,7 @@
             </tr>
             <tr>
                 <td>Deregister user</td>
+                <td>/users/[username]</td>
                 <td>/users/:username</td>
                 <td>DELETE</td>
                 <td>None</td>
