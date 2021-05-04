@@ -73,7 +73,13 @@
                 <td>/movies/:descriptions</td>
                 <td>GET</td>
                 <td>None</td>
-                <td>JSON object containing specific movie data (description, genres, director,image URL)</td>
+                <td>JSON object containing specific movie data (description, genres, director,image URL) <p>ex:<br> {<br>title: 'Captian America: The First Avenger',<br>
+                    mainActor: 'Chris Evans',<br>
+                    genre: 'Action',<br>
+                    releaseDate: 2011,<br>
+                    director: 'Joe Johnston'<br>
+                    [image URL]
+                }</p></td>
             </tr>
             <tr>
                 <td>Get genre description</td>
@@ -89,7 +95,14 @@
                 <td>None</td>
                 <td>GET</td>
                 <td>None</td>
-                <td>JSON object containing data about directors (bio, birth year, death year)</td>
+                <td>JSON object containing data about directors (bio, birth year, death year)
+                    <p>ex:<br> {
+                        name: 'Anna Boden',<br>
+                        bio: 'Anna Boden directed the Marvel movie, "Captain Marvel"...',<br>
+                        birthYear: '1979',<br>
+                        deathYear: ''<br>
+                    },</p>
+                </td>
             </tr>
             <tr>
                 <td>Register a user</td>
