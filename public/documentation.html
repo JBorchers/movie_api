@@ -60,34 +60,36 @@
                 </tr>
             </thead>
             <tr>
-                <td>Display list of ALL movies to user</td>
+                <td>Display list of ALL movies and all movie descriptions to user</td>
                 <td>/movies</td>
-                <td>None</td>
+                <td>/movies</td>
                 <td>GET</td>
                 <td>None</td>
-                <td>JSON object containing data about all movies</td>
-            </tr>
-            <tr>
-                <td>Get movie descriptions</td>
-                <td>/movies/[descriptions]</td>
-                <td>/movies/:descriptions</td>
-                <td>GET</td>
-                <td>None</td>
-                <td>JSON object containing specific movie data (description, genres, director,image URL) <p>ex:<br> {<br>title: 'Captian America: The First Avenger',<br>
-                    mainActor: 'Chris Evans',<br>
+                <td>JSON object containing specific movie data (description, genres, director,image URL) <p>ex:<br> {<br>title: 'Deadpool',<br>
                     genre: 'Action',<br>
-                    releaseDate: 2011,<br>
-                    director: 'Joe Johnston'<br>
-                    [image URL]
+                    director: {
+                        Name: "Tim Miller",<br>
+                        Bio: "Tim Miller is an American film director, producer, screenwriter, and <br> visual effects artist. He made his feature-film directing debut with Deadpool.",<br>
+                        Birth: "1964"<br>
+                        },<br>
+                    Description: "A wisecracking mercenary gets experimented on and becomes immortal <br> but ugly, and sets out to track down the man who ruined his looks.",<br>
+                    ReleaseDate: "2016",<br>
+                    ImagePath: "https://m.media-amazon.com/images/M/MV5BYzE5MjY1ZDgtMTkyNC00MTMyLThhMjA<br>tZGI5OTE1NzFlZGJjXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_UX182_<br>CR0,0,182,268_AL_.jpg",<br>
+                    Featured: false<br>
                 }</p></td>
             </tr>
             <tr>
                 <td>Get genre description</td>
-                <td>/movies/[genres]</td>
-                <td>/movies/:genres</td>
+                <td>/movies/genre/[genres]</td>
+                <td>/movies/genre/:genres</td>
                 <td>GET</td>
                 <td>None</td>
-                <td>JSON object containing data about genres</td>
+                <td>JSON object containing data about genres<p>ex:<br>
+                    {<br>
+                    "_id": "609c0bc6a8ea1b6647502543",<br>
+                    "Name": "Action",<br>
+                    "Description": "Action film is a film genre in which the protagonist or <br> protagonists are thrust into a series of events that typically <br> include violence, extended fighting, phyical feats, rescues and frantic chases."
+                    }</p></td>
             </tr>
             <tr>
                 <td>Get list of directors</td>
@@ -110,7 +112,15 @@
                 <td>None</td>
                 <td>POST</td>
                 <td>JSON object holding data about the registering user</td>
-                <td>JSON object holding data about the user that was registered, including a unique ID</td>
+                <td>JSON object holding data about the user that was registered, including a unique ID<p>ex:<br>
+                    {<br>
+                    "_id": "60a3ecccda13525428837164",<br>
+                    "Username" : "somenewuser",<br>
+                    "Password" : "1234",<br>
+                    "Email" : "somenewuser@gmail.com"<br>
+                    "Birthday" : "01/01/1990"<br>
+                    }
+                </p></td>
             </tr>
             <tr>
                 <td>Update a user's information</td>
@@ -118,7 +128,16 @@
                 <td>/users/:username</td>
                 <td>PUT</td>
                 <td>None</td>
-                <td>A text message indicating the user's information has been updated</td>
+                <td>A text message indicating the user's information has been updated<p>ex:<br>
+                    {<br>
+                    "_id": "60a3ecccda13525428837164",<br>
+                    "Username" : "somenewuser",<br>
+                    "Password" : "4321",<br>
+                    "Email" : "somenewuser@gmail.com"<br>
+                    "Birthday" : "01/01/1990"<br>
+                    }<br><br>
+                    "somenewuser's password has been updated"
+                </p></td>
             </tr>
             <tr>
                 <td>Add movie to user's list of favorites</td>
@@ -126,7 +145,18 @@
                 <td>/users/:username/favorites</td>
                 <td>POST</td>
                 <td>JSON object holding data about the movies to add to favorite's list</td>
-                <td>JSON object holding data about the movies added to favorie's list</td>
+                <td>JSON object holding data about the movies added to favorie's list<p>ex:<br>
+                    {<br>
+        "FavoriteMovies": [<br>
+            "609c26caa8ea1b6647502546",<br>
+            "609c27aea8ea1b664750254e"<br>
+        ],<br>
+        "_id": "609c291da8ea1b6647502552",<br>
+        "userName": "captainmovie",<br>
+        "Password": "ilovemovies22",<br>
+        "Email": "captainmovie@gmail.com",<br>
+        "Birthday": "1998-08-08T00:00:00.000Z"<br>
+    }</p></td>
             </tr>
             <tr>
                 <td>Remove movie from user's favorites list</td>
@@ -134,7 +164,8 @@
                 <td>/users/:username/favorites/movies</td>
                 <td>DELETE</td>
                 <td>None</td>
-                <td>A text message indicating a movie has successfully been removed</td>
+                <td>A text message indicating a movie has successfully been removed<p>ex:<br>
+                "609c26caa8ea1b6647502546 has been removed"</p></td>
             </tr>
             <tr>
                 <td>Deregister user</td>
@@ -142,7 +173,8 @@
                 <td>/users/:username</td>
                 <td>DELETE</td>
                 <td>None</td>
-                <td>A text message indicating the user has successfully deregistered</td>
+                <td>A text message indicating the user has successfully deregistered<p>ex:<br>
+                "'Test User's' profile has been removed"</p></td>
             </tr>
         </table>
     </div>
