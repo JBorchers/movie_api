@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const Models = require('./models.js');
+const cors = require('cors');
+const { check, validationResult } = require('express-validator');
 
 // model names defined in models.js
 const Movies = Models.Movie;
@@ -12,15 +14,12 @@ mongoose.connect('mongodb://localhost:27017/myFlixDB',
 // imports express module locally
 const express = require('express'),
 morgan = require('morgan'),
-bodyParser = require('body-parser'),
 uuid = require('uuid');
 
 
 // declares variable - used to route HTTP requests and responses
 const app = express();
 app.use(express.json());
-// old code? Replaced by above code?
-app.use(bodyParser.json());
 
 // requires Passport module, imports passport.js file
 const passport = require('passport');
@@ -107,29 +106,49 @@ app.get('/directors', passport.authenticate('jwt', { session: false }), (req, re
 
 // get director by name
 app.get('/directors/:name', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Movies.findOne({'director.name' : req.params.Name}).then((director) => {
-    res.status(201).json(director.Director);
-  }).catch((err) => {
-    console.error(err);
-    res.status(500).send('Error: ' + err)
-  });
+  Movies.findOne({'Director.Name' : req.params.name})
+  .then(director => res.status(201).json(director.Director))
+  .catch(err => res.status(500).send('Error: ' + err));
 });
 
+// app.get('/directors/:name', passport.authenticate('jwt', { session: false }), async (req, res) => {
+//   try {
+//     let director = await Movies.findOne({'Director.Name' : req.params.name});
+//     res.status(201).json(director.Director);
+//   } catch(err) {
+//     res.status(500).send('Error: ' + err);
+//   }
+// });
+
 // registers a new user
-app.post('/users', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.post('/users', passport.authenticate('jwt', { session: false }), [
+check('Username', 'Username contains non-alphanumeric characters - not allowed.').isAlphanumeric(),
+check('Username', 'Username is required').isLength({min: 5}),
+check('Password', 'Password is required').not().isEmpty(),
+check('Email', 'Email does not appear to be valid').isEmail()], (req, res) => {
+  // check validation object for errors
+  let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
+  let hashedPassword = Users.hashPassword(req.body.Password);
   Users.findOne({ Username: req.body.Username })
+  // search to see if user with requested username already exists
   .then((user) => {
     if (user) {
+      // if user is found, send a response that it already exists
       return res.status(400).send(req.body.Username + 'already exists');
     } else {
       Users
       .create({
         Username: req.body.Username,
-        Password: req.body.Password,
+        Password: hashedPassword,
         Email: req.body.Email,
         Birthday: req.body.Birthday
       })
-      .then((user) =>{res.status(201).json(user) })
+      .then((user) => { res.status(201).json(user) })
       .catch((error) => {
         console.error(error);
         res.status(500).send('Error: ' + error);
@@ -169,11 +188,24 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (r
 });
 
 // update existing user info
-app.put('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.put('/users/:Username', passport.authenticate('jwt', { session: false }), [
+check('Username', 'Username contains non-alphanumeric characters - not allowed.').isAlphanumeric(),
+check('Username', 'Username is required').isLength({min: 5}),
+check('Password', 'Password is required').not().isEmpty(),
+check('Email', 'Email does not appear to be valid').isEmail()], (req, res) => {
+  // check validation object for errors
+  let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    };
+
+    // Hash the submitted password
+    let hashedPassword = Users.hashPassword(req.body.Password);
   Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
     {
       Username: req.body.Username,
-      Password: req.body.Password,
+      Password: hashedPassword,
       Email: req.body.Email,
       Birthday: req.body.Birthday
     }
@@ -241,9 +273,8 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
 
 
 
-
-
 // listening for requests
-app.listen(8080, () => {
-  console.log('My project is running on port 8080.');
+const port = process.env.PORT || 8080;
+app.listen(port, '0.0.0.0', () => {
+  console.log('Listening on Port ' + port);
 });
