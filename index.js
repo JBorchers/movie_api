@@ -8,7 +8,7 @@ const Movies = Models.Movie;
 const Users = Models.User;
 const Genres = Models.Genre;
 
-mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 // mongoose.connect('mongodb://localhost:27017/myFlixDB', 
 // { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -20,6 +20,7 @@ uuid = require('uuid');
 
 // declares variable - used to route HTTP requests and responses
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 // requires Passport module, imports passport.js file
