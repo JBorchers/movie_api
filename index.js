@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 const Models = require('./models.js');
 const cors = require('cors');
 const { check, validationResult } = require('express-validator');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 // model names defined in models.js
 const Movies = Models.Movie;
@@ -123,7 +126,7 @@ app.get('/directors/:name', passport.authenticate('jwt', { session: false }), (r
 // });
 
 // registers a new user
-app.post('/users', passport.authenticate('jwt', { session: false }), [
+app.post('/users', [
 check('Username', 'Username contains non-alphanumeric characters - not allowed.').isAlphanumeric(),
 check('Username', 'Username is required').isLength({min: 5}),
 check('Password', 'Password is required').not().isEmpty(),
@@ -278,5 +281,5 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
 // listening for requests
 const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0', () => {
-  console.log('Listening on Port ' + port);
+    console.log('Listening on port ' + port);
 });
