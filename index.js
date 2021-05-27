@@ -130,8 +130,8 @@ app.get('/directors/:name', passport.authenticate('jwt', { session: false }), (r
 app.post('/users', [
 check('Username', 'Username contains non-alphanumeric characters - not allowed.').isAlphanumeric(),
 check('Username', 'Username is required').isLength({min: 5}),
-check('Password', 'Password is required').not().isEmpty()
-// check('Email', 'Email does not appear to be valid').isEmail()
+check('Password', 'Password is required').not().isEmpty(),
+check('Email', 'This email does not appear to be valid').isEmail()
 ], (req, res) => {
   // check validation object for errors
   let errors = validationResult(req);
