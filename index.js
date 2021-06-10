@@ -27,7 +27,7 @@ const app = express();
 // app.use(cors());
 app.use(express.json());
 
-let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'https://borchers-movie-api.herokuapp.com/', 'https://dashboard.heroku.com/apps', 'https://heroku.com', 'https://borchers-movie-api.herokuapp.com/login'];
+let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'localhost:1234', 'https://borchers-movie-api.herokuapp.com/', 'https://dashboard.heroku.com/apps', 'https://heroku.com', 'https://borchers-movie-api.herokuapp.com/login'];
 
 app.use(cors({
   origin: (origin, callback) => {
