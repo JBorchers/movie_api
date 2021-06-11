@@ -1,10 +1,20 @@
+const express = require('express'),
+	morgan = require('morgan');
+
+const app = express();
+
+let auth = require('./auth')(app);
+
+const cors = require('cors');
+app.use(cors());
+
+const passport = require('passport');
+require('./passport');
+
+const { check, validationResult } = require('express-validator');
+
 const mongoose = require('mongoose');
 const Models = require('./models.js');
-const cors = require('cors');
-const { check, validationResult } = require('express-validator');
-const dotenv = require('dotenv');
-
-dotenv.config();
 
 // model names defined in models.js
 const Movies = Models.Movie;
@@ -13,42 +23,10 @@ const Genres = Models.Genre;
 
 // connect to MongoDB Atlas
 mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-// mongoose.connect('mongodb://localhost:27017/myFlixDB', 
-// { useNewUrlParser: true, useUnifiedTopology: true });
-
-const app = express();
 
 // invokes middleware function; uses morgan's 'common' format
 app.use(morgan('common'));
 app.use('/', express.static('public'));
-app.use(express.json());
-
-// imports express module locally
-const express = require('express'),
-morgan = require('morgan'),
-uuid = require('uuid');
-
-// required to use CORS
-app.use(cors(corsOptions));
-// imports auth.js file into project
-let auth = require('./auth')(app);
-
-// requires Passport module, imports passport.js file
-const passport = require('passport');
-require('./passport');
-
-let allowedOrigins = ['http://localhost:1234','http://localhost:8080'];
-
-let corsOptions = {
-  origin: function (origin, callback) {
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-};
-
 
 // error-handling middleware
 app.use((err, req, res, next) => {
