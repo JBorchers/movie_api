@@ -1,12 +1,19 @@
+// connect to MongoDB Atlas
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+
 const express = require('express'),
 	morgan = require('morgan');
 
 const app = express();
 
-let auth = require('./auth')(app);
+// invokes middleware function; uses morgan's 'common' format
+app.use(morgan('common'));
+app.use('/', express.static('public'));
 
+// let allowedOrigins = ['http://localhost:1234']
 const cors = require('cors');
 app.use(cors());
+let auth = require('./auth')(app);
 
 const passport = require('passport');
 require('./passport');
@@ -21,12 +28,6 @@ const Movies = Models.Movie;
 const Users = Models.User;
 const Genres = Models.Genre;
 
-// connect to MongoDB Atlas
-mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-
-// invokes middleware function; uses morgan's 'common' format
-app.use(morgan('common'));
-app.use('/', express.static('public'));
 
 // error-handling middleware
 app.use((err, req, res, next) => {
