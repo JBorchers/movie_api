@@ -1,39 +1,89 @@
-// connect to MongoDB Atlas
-mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-
+//requiring modules
 const express = require('express'),
-	morgan = require('morgan');
+    morgan = require('morgan'),
+    bodyParser = require('body-parser'),
+    mongoose = require('mongoose'),
+    Models = require('./models.js'),
+    app = express(),
+    Movies = Models.Movie,
+    Users = Models.User,
+    passport = require('passport'),
+    cors = require('cors'),
+    { check, validationResult } = require('express-validator');
 
-const app = express();
-
-// invokes middleware function; uses morgan's 'common' format
-app.use(morgan('common'));
-app.use('/', express.static('public'));
-
-// let allowedOrigins = ['http://localhost:1234']
-const cors = require('cors');
-app.use(cors());
-let auth = require('./auth')(app);
-
-const passport = require('passport');
 require('./passport');
 
-const { check, validationResult } = require('express-validator');
+// CORS
+app.use(cors()); //this will allow requests from all origins, otherwise uncomment bellow:
 
-const mongoose = require('mongoose');
-const Models = require('./models.js');
+// let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+// app.use(cors({
+//   origin: (origin, callback) => {
+//     if(!origin) return callback(null, true);
+//     if(allowedOrigins.indexOf(origin) === -1){ // If a specific origin isn’t found on the list of allowed origins
+//       let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
+//       return callback(new Error(message ), false);
+//     }
+//     return callback(null, true);
+//   }
+// }));
 
-// model names defined in models.js
-const Movies = Models.Movie;
-const Users = Models.User;
-const Genres = Models.Genre;
+app.use(morgan('common'));
+app.use(bodyParser.json());
 
+// serving static documentation.html
+app.use(express.static('public'));
 
-// error-handling middleware
+//error handling
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Uh oh, something broke!');
+    console.error(err.stack);
+    res.status(500).send('Oh no! Something is wrong!');
 });
+
+let auth = require('./auth')(app);
+
+//connecting mongoose with my db so it can CRUD, bellow static db for testing
+// mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+
+
+// // connect to MongoDB Atlas
+// mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+
+// const express = require('express'),
+// 	morgan = require('morgan');
+
+// const app = express();
+
+// // invokes middleware function; uses morgan's 'common' format
+// app.use(morgan('common'));
+// app.use('/', express.static('public'));
+// app.use(bodyParser.json());
+
+// // let allowedOrigins = ['http://localhost:1234']
+// const cors = require('cors');
+// app.use(cors());
+// let auth = require('./auth')(app);
+
+// const passport = require('passport');
+// require('./passport');
+
+// const { check, validationResult } = require('express-validator');
+
+// const mongoose = require('mongoose');
+// const Models = require('./models.js');
+
+// // model names defined in models.js
+// const Movies = Models.Movie;
+// const Users = Models.User;
+// const Genres = Models.Genre;
+
+
+// // error-handling middleware
+// app.use((err, req, res, next) => {
+//   console.error(err.stack);
+//   res.status(500).send('Uh oh, something broke!');
+// });
 
 
 // Express codes to route endpoints
