@@ -6,6 +6,11 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
+// declares variable - used to route HTTP requests and responses
+const app = express();
+app.use(cors());
+app.use(express.json());
+
 // model names defined in models.js
 const Movies = Models.Movie;
 const Users = Models.User;
@@ -22,23 +27,20 @@ morgan = require('morgan'),
 uuid = require('uuid');
 
 
-// declares variable - used to route HTTP requests and responses
-const app = express();
-// app.use(cors());
-app.use(express.json());
 
-let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'localhost:1234', 'https://borchers-movie-api.herokuapp.com/', 'https://dashboard.heroku.com/apps', 'https://heroku.com', 'https://borchers-movie-api.herokuapp.com/login'];
 
-app.use(cors({
-  origin: (origin, callback) => {
-    if(!origin) return callback(null, true);
-    if(allowedOrigins.indexOf(origin) === -1){ // If a specific origin isn’t found on the list of allowed origins
-      let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
-      return callback(new Error(message ), false);
-    }
-    return callback(null, true);
-  }
-}));
+// let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'localhost:1234', 'https://borchers-movie-api.herokuapp.com/', 'https://dashboard.heroku.com/apps', 'https://heroku.com', 'https://borchers-movie-api.herokuapp.com/login'];
+
+// app.use(cors({
+//   origin: (origin, callback) => {
+//     if(!origin) return callback(null, true);
+//     if(allowedOrigins.indexOf(origin) === -1){ // If a specific origin isn’t found on the list of allowed origins
+//       let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
+//       return callback(new Error(message ), false);
+//     }
+//     return callback(null, true);
+//   }
+// }));
 
 // requires Passport module, imports passport.js file
 const passport = require('passport');
