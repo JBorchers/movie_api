@@ -6,11 +6,6 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-// declares variable - used to route HTTP requests and responses
-const app = express();
-app.use(cors());
-app.use(express.json());
-
 // model names defined in models.js
 const Movies = Models.Movie;
 const Users = Models.User;
@@ -21,36 +16,39 @@ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnified
 // mongoose.connect('mongodb://localhost:27017/myFlixDB', 
 // { useNewUrlParser: true, useUnifiedTopology: true });
 
+const app = express();
+
+// invokes middleware function; uses morgan's 'common' format
+app.use(morgan('common'));
+app.use('/', express.static('public'));
+app.use(express.json());
+
 // imports express module locally
 const express = require('express'),
 morgan = require('morgan'),
 uuid = require('uuid');
 
-
-
-
-// let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'localhost:1234', 'https://borchers-movie-api.herokuapp.com/', 'https://dashboard.heroku.com/apps', 'https://heroku.com', 'https://borchers-movie-api.herokuapp.com/login'];
-
-// app.use(cors({
-//   origin: (origin, callback) => {
-//     if(!origin) return callback(null, true);
-//     if(allowedOrigins.indexOf(origin) === -1){ // If a specific origin isn’t found on the list of allowed origins
-//       let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
-//       return callback(new Error(message ), false);
-//     }
-//     return callback(null, true);
-//   }
-// }));
+// required to use CORS
+app.use(cors(corsOptions));
+// imports auth.js file into project
+let auth = require('./auth')(app);
 
 // requires Passport module, imports passport.js file
 const passport = require('passport');
 require('./passport');
 
-// invokes middleware function; uses morgan's 'common' format
-app.use(morgan('common'));
+let allowedOrigins = ['http://localhost:1234','http://localhost:8080'];
 
-app.use('/', express.static('public'));
-
+app.use(cors({
+  origin: (origin, callback) => {
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1){ // If a specific origin isn’t found on the list of allowed origins
+      let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
+      return callback(new Error(message ), false);
+    }
+    return callback(null, true);
+  }
+}));
 
 
 // error-handling middleware
@@ -59,8 +57,6 @@ app.use((err, req, res, next) => {
   res.status(500).send('Uh oh, something broke!');
 });
 
-// imports auth.js file into project
-let auth = require('./auth')(app);
 
 // Express codes to route endpoints
 app.get('/', (req, res) => {
