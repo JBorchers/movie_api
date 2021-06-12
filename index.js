@@ -1,51 +1,37 @@
-//requiring modules
 const express = require('express'),
-    morgan = require('morgan'),
-    bodyParser = require('body-parser'),
-    mongoose = require('mongoose'),
-    Models = require('./models.js'),
-    app = express(),
-    Movies = Models.Movie,
-    Users = Models.User,
-    passport = require('passport'),
-    cors = require('cors'),
-    { check, validationResult } = require('express-validator');
+	morgan = require('morgan');
 
-require('./passport');
+const bodyParser = require('body-parser');
 
-// CORS
-app.use(cors()); //this will allow requests from all origins, otherwise uncomment bellow:
-
-// let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
-// app.use(cors({
-//   origin: (origin, callback) => {
-//     if(!origin) return callback(null, true);
-//     if(allowedOrigins.indexOf(origin) === -1){ // If a specific origin isn’t found on the list of allowed origins
-//       let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
-//       return callback(new Error(message ), false);
-//     }
-//     return callback(null, true);
-//   }
-// }));
-
-app.use(morgan('common'));
+const app = express();
 app.use(bodyParser.json());
-
-// serving static documentation.html
-app.use(express.static('public'));
-
-//error handling
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Oh no! Something is wrong!');
-});
 
 let auth = require('./auth')(app);
 
-//connecting mongoose with my db so it can CRUD, bellow static db for testing
-// mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true});
+const cors = require('cors');
+app.use(cors());
+
+const passport = require('passport');
+require('./passport');
+
+const { check, validationResult } = require('express-validator');
+
+const mongoose = require('mongoose');
+const Models = require('./models.js');
+
+const Movies = Models.Movie;
+const Users = Models.User;
+const Genres = Models.Genre;
+
+// LOCAL HOST
+//mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+
+//MongoDB Atlas HOST
 mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
+app.use(morgan('common'));
+
+app.use(express.static('public'));
 
 // // connect to MongoDB Atlas
 // mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
