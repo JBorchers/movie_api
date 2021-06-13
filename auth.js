@@ -33,6 +33,7 @@ module.exports = (router) => {
           res.send(error);
         }
         let token = generateJWTToken(user.toJSON());
+        res.setHeader ('Access-Control-Allow-Origin', '*');
         // ES6 shorthand for res.json({ user: user, token: token}) - keys and values are the same
         return res.json({ user, token });
       });
