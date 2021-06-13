@@ -8,6 +8,7 @@ app.use(bodyParser.json());
 
 let auth = require('./auth')(app);
 
+let allowedOrigins = ['http://localhost:1234']
 const cors = require('cors');
 app.use(cors());
 
