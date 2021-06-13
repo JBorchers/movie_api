@@ -65,11 +65,11 @@ app.use(express.static('public'));
 // const Genres = Models.Genre;
 
 
-// // error-handling middleware
-// app.use((err, req, res, next) => {
-//   console.error(err.stack);
-//   res.status(500).send('Uh oh, something broke!');
-// });
+// error-handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Uh oh, something broke!');
+});
 
 
 // Express codes to route endpoints
