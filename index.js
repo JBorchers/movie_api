@@ -8,9 +8,21 @@ app.use(bodyParser.json());
 
 let auth = require('./auth')(app);
 
-let allowedOrigins = ['http://localhost:1234']
 const cors = require('cors');
-app.use(cors());
+app.use(cors(corsOptions));
+
+let allowedOrigins = ['http://localhost:1234']
+
+let corsOptions = {
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+};
+
 
 const passport = require('passport');
 require('./passport');
