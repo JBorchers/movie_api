@@ -170,7 +170,7 @@ app.get('/directors/:name', passport.authenticate('jwt', { session: false }), (r
 
 // registers a new user
 app.post('/users', [
-check('Username', 'Username contains non-alphanumeric characters - not allowed.').isAlphanumeric(),
+check('Username', 'Check - Username contains non-alphanumeric characters - not allowed.').isAlphanumeric(),
 check('Username', 'Username is required').isLength({min: 5}),
 check('Password', 'Password is required').not().isEmpty(),
 check('Email', 'Email does not appear to be valid').isEmail()
