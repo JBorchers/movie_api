@@ -10,6 +10,8 @@ let auth = require('./auth')(app);
 const cors = require('cors');
 app.use(cors());
 
+app.use(bodyParser.json());
+
 // const cors = require('cors');
 // app.use(cors(corsOptions));
 
