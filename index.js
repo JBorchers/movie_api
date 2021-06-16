@@ -5,18 +5,7 @@ const express = require('express'),
   cors = require('cors'),
   dotenv = require('dotenv');
 
-dotenv.config();
-
-const Config = require('./config');
-
-const { check, validationResult } = require('express-validator');
-
-const app = express();
-
-let auth = require('./auth')(app);
-
 app.use(cors());
-
 // app.use(cors(corsOptions));
 
 // let allowedOrigins = ['http://localhost:1234']
@@ -30,6 +19,16 @@ app.use(cors());
 //     }
 //   },
 // };
+
+dotenv.config();
+
+const Config = require('./config');
+
+const { check, validationResult } = require('express-validator');
+
+const app = express();
+
+let auth = require('./auth')(app);
 
 
 const passport = require('passport');
