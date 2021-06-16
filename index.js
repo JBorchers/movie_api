@@ -1,18 +1,17 @@
 const express = require('express'),
-	morgan = require('morgan');
+	morgan = require('morgan'),
+  uuid = require('uuid'),
+  bodyParser = require('body-parser'),
+  cors = require('cors');
 
-const bodyParser = require('body-parser');
+const { check, validationResult } = require('express-validator');
 
 const app = express();
 
 let auth = require('./auth')(app);
 
-const cors = require('cors');
 app.use(cors());
 
-app.use(bodyParser.json());
-
-// const cors = require('cors');
 // app.use(cors(corsOptions));
 
 // let allowedOrigins = ['http://localhost:1234']
@@ -31,8 +30,6 @@ app.use(bodyParser.json());
 const passport = require('passport');
 require('./passport');
 
-const { check, validationResult } = require('express-validator');
-
 const mongoose = require('mongoose');
 const Models = require('./models.js');
 
@@ -44,42 +41,15 @@ const Genres = Models.Genre;
 //mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
 //MongoDB Atlas HOST
-mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.CONNECTION_URI, { 
+  useNewUrlParser: true, 
+  useUnifiedTopology: true,
+ });
 
 app.use(morgan('common'));
-
 app.use(express.static('public'));
-
-// // connect to MongoDB Atlas
-// mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-
-// const express = require('express'),
-// 	morgan = require('morgan');
-
-// const app = express();
-
-// // invokes middleware function; uses morgan's 'common' format
-// app.use(morgan('common'));
-// app.use('/', express.static('public'));
+app.use(express.json());
 // app.use(bodyParser.json());
-
-// // let allowedOrigins = ['http://localhost:1234']
-// const cors = require('cors');
-// app.use(cors());
-// let auth = require('./auth')(app);
-
-// const passport = require('passport');
-// require('./passport');
-
-// const { check, validationResult } = require('express-validator');
-
-// const mongoose = require('mongoose');
-// const Models = require('./models.js');
-
-// // model names defined in models.js
-// const Movies = Models.Movie;
-// const Users = Models.User;
-// const Genres = Models.Genre;
 
 
 // error-handling middleware
@@ -169,13 +139,15 @@ app.get('/directors/:name', passport.authenticate('jwt', { session: false }), (r
 //   }
 // });
 
-// registers a new user
+
+// register a new user
 app.post('/users', [
 check('Username', 'Check - Username contains non-alphanumeric characters - not allowed.').isAlphanumeric(),
 check('Username', 'Username is required').isLength({min: 5}),
 check('Password', 'Password is required').not().isEmpty(),
 check('Email', 'Email does not appear to be valid').isEmail()
-], (req, res) => {
+], 
+(req, res) => {
   // check validation object for errors
   let errors = validationResult(req);
 
@@ -191,14 +163,15 @@ check('Email', 'Email does not appear to be valid').isEmail()
       // if user is found, send a response that it already exists
       return res.status(400).send(req.body.Username + 'already exists');
     } else {
-      Users
-      .create({
+      Users.create({
         Username: req.body.Username,
         Password: hashedPassword,
         Email: req.body.Email,
         Birthday: req.body.Birthday
       })
-      .then((user) => { res.status(201).json(user) })
+      .then((user) => { 
+        res.status(201).json(user);
+      })
       .catch((error) => {
         console.error(error);
         res.status(500).send('Error: ' + error);
