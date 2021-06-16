@@ -3,36 +3,39 @@ const express = require('express'),
   uuid = require('uuid'),
   bodyParser = require('body-parser'),
   cors = require('cors'),
-  dotenv = require('dotenv');
-
-app.use(cors());
-// app.use(cors(corsOptions));
-
-// let allowedOrigins = ['http://localhost:1234']
-
-// let corsOptions = {
-//   origin: function (origin, callback) {
-//     if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error("Not allowed by CORS"));
-//     }
-//   },
-// };
-
-dotenv.config();
-
-const Config = require('./config');
+  dotenv = require('dotenv'),
+  passport = require('passport'),
+  app = express(),
+  Config = require('./config');
 
 const { check, validationResult } = require('express-validator');
 
-const app = express();
+require('./passport');
+
+// allows requests from all origins
+app.use(cors());
+
+// // CORS - limit allowed origings:
+// let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+// app.use(cors({
+//   origin: (origin, callback) => {
+//     if(!origin) return callback(null, true);
+//     if(allowedOrigins.indexOf(origin) === -1){ // If a specific origin isn’t found on the list of allowed origins
+//       let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
+//       return callback(new Error(message ), false);
+//     }
+//     return callback(null, true);
+//   }
+// }));
+
+dotenv.config();
+
+app.use(morgan('common'));
+app.use(express.static('public'));
+app.use(express.json());
+// app.use(bodyParser.json());
 
 let auth = require('./auth')(app);
-
-
-const passport = require('passport');
-require('./passport');
 
 const mongoose = require('mongoose');
 const Models = require('./models.js');
@@ -46,16 +49,10 @@ const Genres = Models.Genre;
 
 //MongoDB Atlas HOST
 mongoose.connect(Config.CONNECTION_URI, { 
-// CONNECTION_URI=mongodb://localhost:27017/myFlixDB
 // mongoose.connect(process.env.CONNECTION_URI, { 
   useNewUrlParser: true, 
   useUnifiedTopology: true,
  });
-
-app.use(morgan('common'));
-app.use(express.static('public'));
-app.use(express.json());
-// app.use(bodyParser.json());
 
 
 // error-handling middleware
