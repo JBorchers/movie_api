@@ -2,7 +2,12 @@ const express = require('express'),
 	morgan = require('morgan'),
   uuid = require('uuid'),
   bodyParser = require('body-parser'),
-  cors = require('cors');
+  cors = require('cors'),
+  dotenv = require('dotenv');
+
+dotenv.config();
+
+const Config = require('./config');
 
 const { check, validationResult } = require('express-validator');
 
@@ -41,7 +46,9 @@ const Genres = Models.Genre;
 //mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
 //MongoDB Atlas HOST
-mongoose.connect(process.env.CONNECTION_URI, { 
+mongoose.connect(Config.CONNECTION_URI, { 
+// CONNECTION_URI=mongodb://localhost:27017/myFlixDB
+// mongoose.connect(process.env.CONNECTION_URI, { 
   useNewUrlParser: true, 
   useUnifiedTopology: true,
  });
