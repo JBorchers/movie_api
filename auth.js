@@ -24,7 +24,7 @@ module.exports = (router) => {
   router.post('/login', (req, res) => {
     passport.authenticate('local', { session: false }, (error, user, info) => {
       if (error || !user) {
-        res.setHeader ('Access-Control-Allow-Origin', '*');
+        // res.setHeader ('Access-Control-Allow-Origin', '*');
         return res.status(400).json({
           message: 'Something is not right',
           user: user,
@@ -35,7 +35,7 @@ module.exports = (router) => {
           res.send(error);
         }
         let token = generateJWTToken(user.toJSON());
-        res.setHeader ('Access-Control-Allow-Origin', '*');
+        // res.setHeader ('Access-Control-Allow-Origin', '*');
         // ES6 shorthand for res.json({ user: user, token: token}) - keys and values are the same
         return res.json({ user, token });
       });
