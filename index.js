@@ -1,9 +1,11 @@
+require("dotenv").config()
+
 const express = require('express'),
 	morgan = require('morgan'),
   uuid = require('uuid'),
   bodyParser = require('body-parser'),
   cors = require('cors'),
-  dotenv = require('dotenv'),
+  // dotenv = require('dotenv'),
   passport = require('passport'),
   app = express(),
   Config = require('./config');
@@ -28,7 +30,7 @@ app.use(cors());
 //   }
 // }));
 
-dotenv.config();
+// dotenv.config();
 
 app.use(morgan('common'));
 app.use(express.static('public'));
