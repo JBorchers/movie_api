@@ -218,11 +218,13 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (r
 });
 
 // update existing user info
-app.put('/users/:Username', passport.authenticate('jwt', { session: false }), [
-check('Username', 'Username contains non-alphanumeric characters - not allowed.').isAlphanumeric(),
-check('Username', 'Username is required').isLength({min: 5}),
-check('Password', 'Password is required').not().isEmpty(),
-check('Email', 'Email does not appear to be valid').isEmail()], (req, res) => {
+// [
+// check('Username', 'Username contains non-alphanumeric characters - not allowed.').isAlphanumeric(),
+// check('Username', 'Username is required').isLength({min: 5}),
+// check('Password', 'Password is required').not().isEmpty(),
+// check('Email', 'Email does not appear to be valid').isEmail()],
+
+app.put('/users/:Username', passport.authenticate('jwt', { session: false }),  (req, res) => {
   // check validation object for errors
   let errors = validationResult(req);
 
