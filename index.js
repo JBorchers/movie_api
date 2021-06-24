@@ -232,14 +232,21 @@ check('Email', 'Email does not appear to be valid').isEmail()], (req, res) => {
 
     // Hash the submitted password
     let hashedPassword = Users.hashPassword(req.body.Password);
-  Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
-    {
-      Username: req.body.Username,
-      Password: hashedPassword,
-      Email: req.body.Email,
-      Birthday: req.body.Birthday
+    let updateObject = {}
+    if (req.body.Username) {
+      updateObject.Username = req.body.Username
     }
-  },
+    if (req.body.Password) {
+      updateObject.Password = req.body.Password
+    }
+    if (req.body.Email) {
+      updateObject.Email = req.body.Email
+    }
+    if (req.body.Birthday) {
+      updateObject.Birthday = req.body.Birthday
+    }
+
+  Users.findOneAndUpdate({ Username: req.params.Username }, { $set: updateObject },
   { new: true }, // This line makes sure that the updated document is returned
   (err, updatedUser) => {
     if(err) {
