@@ -35,15 +35,15 @@ userSchema.methods.validatePassword = function(password) {
   return bcrypt.compareSync(password, this.Password);
 };
 
-let genreSchema = mongoose.Schema({
-    Name: {type: String, required: true},
-    Description: {type: String, required: true},
-    });
+// let genreSchema = mongoose.Schema({
+//     Name: {type: String, required: true},
+//     Description: {type: String, required: true},
+//     });
 
 // creates models that use the schemas defined
 let Movie = mongoose.model('Movie', movieSchema);
 let User = mongoose.model('User', userSchema);
-let Genre = mongoose.model('Genre', genreSchema);
+// let Genre = mongoose.model('Genre', genreSchema);
 
 // imports models into index.js file
 module.exports.Movie = Movie;

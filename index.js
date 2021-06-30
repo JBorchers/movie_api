@@ -44,7 +44,7 @@ const Models = require('./models.js');
 
 const Movies = Models.Movie;
 const Users = Models.User;
-const Genres = Models.Genre;
+// const Genres = Models.Genre;
 
 // LOCAL HOST
 //mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
@@ -95,7 +95,7 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req
 
 // get movies by genre (title?)
 app.get('/movies/:genres', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Genres.findOne({ Name : req.params.Name })
+  Movies.findOne({ Name : req.params.Name })
   .then((movie) => {
     res.status(201).json(movie);
   })
@@ -108,7 +108,7 @@ app.get('/movies/:genres', passport.authenticate('jwt', { session: false }), (re
 
 // return data about genre
 app.get('/genre/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Genres.findOne({ 'Genre.Name' : req.params.Name })
+  Movies.findOne({ 'Genre.Name' : req.params.Name })
   .then((genre) => {
     res.status(201).json(genre.Genre);
   })
@@ -120,7 +120,8 @@ app.get('/genre/:Name', passport.authenticate('jwt', { session: false }), (req, 
 
 // get all directors
 app.get('/directors', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Movies.find({ Name : req.params.Name}).then((director) => {
+  Movies.find({ Name : req.params.Name})
+  .then((director) => {
     res.status(201).json(director.Director);
   }).catch((err) => {
     console.error(err);
