@@ -107,15 +107,15 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req
 
 
 // return data about genre
-app.get('/genre/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Movies.findOne({ 'Genre.Name' : req.params.name })
-  .then(movie => {res.status(201).json(movie.Genre);
-  })
-  .catch((err) => {
-    console.error(err);
-    res.status(500).send('Error: ' + err);
-  });
-});
+// app.get('/genre/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
+//   Movies.findOne({ 'Genre.Name' : req.params.name })
+//   .then(movie => {res.status(201).json(movie.Genre);
+//   })
+//   .catch((err) => {
+//     console.error(err);
+//     res.status(500).send('Error: ' + err);
+//   });
+// });
 
 // get all directors
 app.get('/directors', passport.authenticate('jwt', { session: false }), (req, res) => {
