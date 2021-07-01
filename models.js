@@ -48,4 +48,4 @@ let User = mongoose.model('User', userSchema);
 // imports models into index.js file
 module.exports.Movie = Movie;
 module.exports.User = User;
-module.exports.Genre = Genre;
+// module.exports.Genre = Genre;
