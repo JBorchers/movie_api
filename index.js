@@ -172,7 +172,7 @@ check('Email', 'Email does not appear to be valid').isEmail()
         Username: req.body.Username,
         Password: hashedPassword,
         Email: req.body.Email,
-        Birthday: req.body.Birthday
+        Birthdate: req.body.Birthdate
       })
       .then((user) => { 
         res.status(201).json(user);
@@ -244,8 +244,8 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),  (
     if (req.body.Email) {
       updateObject.Email = req.body.Email
     }
-    if (req.body.Birthday) {
-      updateObject.Birthday = req.body.Birthday
+    if (req.body.Birthdate) {
+      updateObject.Birthdate = req.body.Birthdate
     }
 
   Users.findOneAndUpdate({ Username: req.params.Username }, { $set: updateObject },
