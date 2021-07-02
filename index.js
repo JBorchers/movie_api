@@ -244,8 +244,8 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),  (
     if (req.body.Email) {
       updateObject.Email = req.body.Email
     }
-    if (req.body.Birthdate) {
-      updateObject.Birthdate = req.body.Birthdate
+    if (req.body.Birthday) {
+      updateObject.Birthday = req.body.Birthday
     }
 
   Users.findOneAndUpdate({ Username: req.params.Username }, { $set: updateObject },
