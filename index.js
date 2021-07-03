@@ -172,7 +172,7 @@ check('Email', 'Email does not appear to be valid').isEmail()
         Username: req.body.Username,
         Password: hashedPassword,
         Email: req.body.Email,
-        Birthdate: req.body.Birthdate
+        Birthday: req.body.Birthday
       })
       .then((user) => { 
         res.status(201).json(user);
