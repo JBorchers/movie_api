@@ -239,7 +239,7 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),  (
       updateObject.Username = req.body.Username
     }
     if (req.body.Password) {
-      updateObject.Password = req.body.Password
+      updateObject.Password = hashedPassword
     }
     if (req.body.Email) {
       updateObject.Email = req.body.Email
@@ -247,6 +247,7 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),  (
     if (req.body.Birthday) {
       updateObject.Birthday = req.body.Birthday
     }
+    console.log('updateObject', updateObject)
 
   Users.findOneAndUpdate({ Username: req.params.Username }, { $set: updateObject },
   { new: true }, // This line makes sure that the updated document is returned
